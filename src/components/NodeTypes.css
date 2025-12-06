@@ -1,0 +1,335 @@
+.custom-node {
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: move;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.custom-node:hover {
+  transform: translateY(-2px) scale(1.05);
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+  z-index: 10;
+}
+
+.custom-node.selected {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.6));
+}
+
+.custom-node.selected .node-content {
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.5);
+}
+
+.node-content {
+  min-width: 140px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.node-content::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.node-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.custom-node:hover .node-icon-wrapper {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(5deg) scale(1.1);
+}
+
+.node-icon {
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.node-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.node-description {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.82);
+  text-align: center;
+  line-height: 1.4;
+  max-width: 140px;
+}
+
+.node-custom-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.node-handle {
+  width: 12px;
+  height: 12px;
+  border: 2px solid white;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.node-handle:hover {
+  width: 16px;
+  height: 16px;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.8);
+}
+
+/* Connection line animations */
+.react-flow__edge-path {
+  stroke-width: 3;
+  transition: all 0.3s ease;
+  stroke: #60a5fa;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #60a5fa;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.6));
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #93c5fd;
+  stroke-width: 4;
+}
+
+/* Status-based styling */
+.custom-node.status-critical {
+  animation: pulse-critical 2s ease-in-out infinite;
+}
+
+.custom-node.status-warning {
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+.custom-node.status-critical .node-content {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.6), 0 0 40px rgba(239, 68, 68, 0.4);
+}
+
+.custom-node.status-warning .node-content {
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(245, 158, 11, 0.3);
+}
+
+@keyframes pulse-critical {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes pulse-warning {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.01);
+  }
+}
+
+.node-metrics {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.metric-item {
+  display: inline-block;
+  margin: 0 4px;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.node-status-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.node-status-badge.status-critical {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  animation: blink 1s ease-in-out infinite;
+}
+
+.node-status-badge.status-warning {
+  background: rgba(245, 158, 11, 0.9);
+  color: white;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.node-region-badge {
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.2);
+  color: rgba(147, 197, 253, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  display: inline-block;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* Delete button for nodes */
+.node-delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  border: 2px solid white;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.node-delete-button:hover {
+  background: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+}
+
+.node-delete-button:active {
+  transform: scale(0.95);
+}
+
+/* Edge delete button styles */
+.react-flow__edge-delete-button {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.react-flow__edge:hover .react-flow__edge-delete-button {
+  opacity: 1;
+}
+
+.react-flow__edge-delete-button:hover {
+  background: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+}
+
+/* Enhanced edge selection styles */
+.react-flow__edge.selected {
+  z-index: 10;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #fbbf24;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+}
+
+.react-flow__edge.selected .react-flow__edge-text {
+  fill: #fbbf24;
+  font-weight: 600;
+}
+
+/* Edge interaction feedback */
+.react-flow__edge:hover {
+  cursor: pointer;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #93c5fd;
+  stroke-width: 4;
+}
+
+/* Edge label background for better visibility */
+.react-flow__edge-text {
+  font-size: 11px;
+  fill: #60a5fa;
+  font-weight: 500;
+  pointer-events: none;
+  user-select: none;
+}
