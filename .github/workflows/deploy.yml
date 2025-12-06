@@ -1,0 +1,45 @@
+name: CI/CD Deploy to CIVO
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build app
+      run: npm run build
+      env:
+        VITE_GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+
+    - name: Deploy to CIVO
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.CIVO_HOST }}
+        username: ${{ secrets.CIVO_USER }}
+        key: ${{ secrets.CIVO_SSH_KEY }}
+        source: "dist/*"
+        target: ${{ secrets.APP_PATH }}
+
+    - name: Restart server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.CIVO_HOST }}
+        username: ${{ secrets.CIVO_USER }}
+        key: ${{ secrets.CIVO_SSH_KEY }}
+        script: |
+          sudo systemctl restart nginx
